@@ -94,8 +94,12 @@
   .folder-view {
     padding: 16px;
 
-    .deviation:not(:last-child) {
-      margin-bottom: 16px;
+    .deviation {
+      width: 100%;
+
+      &:not(:last-child) {
+        margin-bottom: 16px;
+      }
     }
 
     & > .md-spinner {

@@ -4,22 +4,6 @@
       <md-list-item @click="click({ name: 'Folders' })" class="md-primary">
         <md-icon>folder</md-icon> <span>Folders</span>
       </md-list-item>
-
-      <md-list-item @click="click()">
-        <md-icon>people</md-icon> <span>Shared with me</span>
-      </md-list-item>
-
-      <md-list-item @click="click()">
-        <md-icon>access_time</md-icon> <span>Recent</span>
-      </md-list-item>
-
-      <md-list-item @click="click()">
-        <md-icon>start</md-icon> <span>Starred</span>
-      </md-list-item>
-
-      <md-list-item @click="click()">
-        <md-icon>delete</md-icon> <span>Trash</span>
-      </md-list-item>
     </md-list>
   </md-sidenav>
 </template>
@@ -47,7 +31,7 @@
     methods: {
       click(route) {
         if (route) {
-          this.$router.push(route)
+          this.$refs.sidebar.$once('close', () => this.$router.push(route))
         }
 
         this.$refs.sidebar.close()
