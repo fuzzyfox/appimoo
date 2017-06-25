@@ -6,6 +6,8 @@ import ArtistListView from '@/views/ArtistListView'
 import ArtistView from '@/views/ArtistView'
 import FolderListView from '@/views/FolderListView'
 import FolderView from '@/views/FolderView'
+import TagListView from '@/views/TagListView'
+import TagView from '@/views/TagView'
 import DeviationView from '@/views/DeviationView'
 import DebugView from '@/views/DebugView'
 
@@ -38,6 +40,16 @@ export default new Router({
       path: '/folders/:folderid',
       name: 'Folder',
       component: FolderView
+    },
+    {
+      path: '/tags',
+      name: 'Tags',
+      component: TagListView
+    },
+    {
+      path: '/tags/:tagName',
+      name: 'Tag',
+      component: TagView
     },
     {
       path: '/wallpaper/:deviationid',

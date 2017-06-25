@@ -1,5 +1,5 @@
 <template lang="html">
-  <md-layout class="folder-view" :md-gutter="16">
+  <div class="folder-view">
     <md-card v-for="deviation in deviations" :key="deviation.deviationid" class="deviation">
       <md-card-media>
         <img :src="deviation.preview.src" :alt="deviation.title" @click="$router.push({ name: 'Deviation', params: { deviationid: deviation.deviationid } })">
@@ -26,7 +26,7 @@
       @close="$router.push({ name: 'Folders' })"
       ref="dialog">
     </md-dialog-alert>
-  </md-layout>
+  </div>
 </template>
 
 <script>

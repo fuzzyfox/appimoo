@@ -29,6 +29,14 @@ const mutations = {
       state.deviations.push(deviation)
     }
   },
+  [mutationType.DEVIATION_UPDATE](state, { deviation }) {
+    const oldData = state.deviations.find(
+      existing => existing.deviationid === deviation.deviationid
+    )
+    if (oldData) {
+      Object.assign(oldData, deviation)
+    }
+  },
   [mutationType.DEVIAIONS_CLEAR](state) {
     Object.assign(state, initState())
   }
@@ -36,8 +44,27 @@ const mutations = {
 
 const getters = {
   deviationById: state => deviationid => _findDeviationById(state, deviationid),
+  deviationsByTagName: state => tagName =>
+    state.deviations.filter(
+      deviation =>
+        deviation.tags && deviation.tags.find(tag => tag.tag_name === tagName)
+    ),
   deviationsByArtist: state => artist =>
     state.deviations.filter(({ author }) => author.userid === artist.userid),
+  tags: state =>
+    sortBy(
+      [
+        ...new Set(
+          state.deviations
+            .filter(({ tags }) => tags)
+            .reduce(
+              (prev, { tags }) => prev.concat(tags.map(tag => tag.tag_name)),
+              []
+            )
+        )
+      ],
+      tag => tag.toLowerCase()
+    ),
   artists: state =>
     sortBy(
       uniqBy(state.deviations.map(({ author }) => author), 'userid'),
@@ -53,6 +80,25 @@ const actions = {
       .then(deviation => {
         commit(mutationType.DEVIAION_INSERT, { deviation })
         return deviation
+      })
+  },
+  loadDeviationMetadata({ commit }, { deviationid, deviationids = [] }) {
+    if (deviationid) {
+      deviationids = [deviationid, ...deviationids].slice(0, 50)
+    }
+
+    return Vue.http
+      .get('deviation/metadata', {
+        params: {
+          deviationids
+        }
+      })
+      .then(response => response.json())
+      .then(({ metadata: deviations }) => {
+        deviations.forEach(deviation =>
+          commit(mutationType.DEVIATION_UPDATE, { deviation })
+        )
+        return deviations
       })
   }
 }

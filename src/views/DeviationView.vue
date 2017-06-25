@@ -14,6 +14,13 @@
           <div class="md-subhead">By: {{ deviation.author.username }}</div>
         </div>
       </div>
+
+      <div class="wallpaper-metadata md-column">
+        <div v-if="deviation.license" class="license"><strong>License:</strong> {{ deviation.license }}</div>
+        <div v-if="deviation.tags && deviation.tags.length">
+          <md-chip v-for="tag in deviation.tags" :key="tag.tag_name">{{ tag.tag_name }}</md-chip>
+        </div>
+      </div>
     </template>
 
     <md-spinner v-if="isLoading" md-indeterminate></md-spinner>
@@ -40,11 +47,17 @@
     },
 
     methods: {
-      ...mapActions(['loadDeviation'])
+      ...mapActions(['loadDeviation', 'loadDeviationMetadata'])
     },
 
     created() {
-      this.loadDeviation({ deviationid: this.$route.params.deviationid })
+      if (!this.deviation) {
+        this.loadDeviation({
+          deviationid: this.$route.params.deviationid
+        }).then(({ deviationid }) => this.loadDeviationMetadata({ deviationid }))
+      } else if (!this.deviation.tags) {
+        this.loadDeviationMetadata({ deviationid: this.deviation.deviationid })
+      }
     }
   }
 </script>
@@ -66,6 +79,10 @@
 
       & > .wallpaper-details {
         flex: 1 1 auto;
+      }
+
+      & > .license {
+        margin-bottom: 8px;
       }
     }
 
