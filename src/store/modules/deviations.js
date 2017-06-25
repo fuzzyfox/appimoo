@@ -78,8 +78,24 @@ const actions = {
       .get(`deviation/${deviationid}`)
       .then(response => response.json())
       .then(deviation => {
-        commit(mutationType.DEVIAION_INSERT, { deviation })
+        commit(mutationType.DEVIAION_INSERT, {
+          deviation: {
+            ...deviation,
+            download: deviation.download || null
+          }
+        })
         return deviation
+      })
+  },
+  loadDeviationDownload({ commit }, { deviationid }) {
+    return Vue.http
+      .get(`deviation/download/${deviationid}`)
+      .then(response => response.json())
+      .then(download => {
+        commit(mutationType.DEVIATION_UPDATE, {
+          deviation: { deviationid, download }
+        })
+        return download
       })
   },
   loadDeviationMetadata({ commit }, { deviationid, deviationids = [] }) {

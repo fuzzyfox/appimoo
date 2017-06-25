@@ -23,12 +23,29 @@
       </div>
     </template>
 
+    <md-speed-dial v-if="!isLoading && deviation" md-mode="scale" class="md-fab-bottom-right">
+      <md-button class="md-fab" md-fab-trigger>
+        <md-icon md-icon-morph>close</md-icon>
+        <md-icon>menu</md-icon>
+      </md-button>
+
+      <md-button class="md-fab md-mini md-clean" @click="$router.push({ name: 'SmartCrop', params: { deviationid: deviation.deviationid } })">
+        <md-icon>crop</md-icon>
+      </md-button>
+
+      <md-button class="md-fab md-mini md-clean" @click="downloadUrl(sourceUrl)">
+        <md-icon>file_download</md-icon>
+      </md-button>
+    </md-speed-dial>
+
     <md-spinner v-if="isLoading" md-indeterminate></md-spinner>
   </md-layout>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
+
+  import { downloadUrl } from '@/libs/utils'
 
   export default {
     name: 'deviation-view',
@@ -43,20 +60,48 @@
       ...mapGetters(['deviationById']),
       deviation() {
         return this.deviationById(this.$route.params.deviationid)
+      },
+      sourceUrl() {
+        if (!this.deviation) {
+          return null
+        }
+
+        if (this.deviation.download) {
+          return this.deviation.download.src
+        }
+
+        if (this.deviation.content) {
+          return this.deviation.content.src
+        }
+
+        return this.deviation.preview.src
       }
     },
 
     methods: {
-      ...mapActions(['loadDeviation', 'loadDeviationMetadata'])
+      ...mapActions([
+        'loadDeviation',
+        'loadDeviationMetadata',
+        'loadDeviationDownload'
+      ]),
+      downloadUrl
     },
 
     created() {
+      const deviationid = this.$route.params.deviationid
+
       if (!this.deviation) {
-        this.loadDeviation({
-          deviationid: this.$route.params.deviationid
-        }).then(({ deviationid }) => this.loadDeviationMetadata({ deviationid }))
-      } else if (!this.deviation.tags) {
-        this.loadDeviationMetadata({ deviationid: this.deviation.deviationid })
+        return this.loadDeviation({ deviationid })
+          .then(() => this.loadDeviationDownload({ deviationid }))
+          .then(() => this.loadDeviationMetadata({ deviationid }))
+      }
+
+      if (!this.deviation.download) {
+        this.loadDeviationDownload({ deviationid })
+      }
+
+      if (!this.deviation.tags) {
+        this.loadDeviationMetadata({ deviationid })
       }
     }
   }
