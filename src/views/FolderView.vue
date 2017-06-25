@@ -1,11 +1,6 @@
 <template lang="html">
   <md-layout class="folder-view" :md-gutter="16">
-    <!-- <router-link v-for="deviation in deviations" class="deviation" :to="{ name: 'Deviation', params: { deviationid: deviation.deviationid } }" tag="div">
-      <img :src="deviation.preview.src" :alt="deviation.title">
-      <md-ink-ripple></md-ink-ripple>
-    </router-link> -->
-
-    <md-card v-for="deviation in deviations" class="deviation">
+    <md-card v-for="deviation in deviations" :key="deviation.deviationid" class="deviation">
       <md-card-media>
         <img :src="deviation.preview.src" :alt="deviation.title" @click="$router.push({ name: 'Deviation', params: { deviationid: deviation.deviationid } })">
 

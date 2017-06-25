@@ -5,6 +5,7 @@ import Hello from '@/components/Hello'
 import FolderListView from '@/views/FolderListView'
 import FolderView from '@/views/FolderView'
 import DeviationView from '@/views/DeviationView'
+import DebugView from '@/views/DebugView'
 
 Vue.use(Router)
 
@@ -30,6 +31,11 @@ export default new Router({
       path: '/wallpaper/:deviationid',
       name: 'Deviation',
       component: DeviationView
+    },
+    {
+      path: '/debug',
+      name: 'Debug',
+      component: DebugView
     }
   ]
 })

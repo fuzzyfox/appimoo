@@ -4,6 +4,10 @@
       <md-list-item @click="click({ name: 'Folders' })" class="md-primary">
         <md-icon>folder</md-icon> <span>Folders</span>
       </md-list-item>
+
+      <md-list-item @click="click({ name: 'Debug' })" class="md-primary">
+        <md-icon>settings</md-icon> <span>Debug</span>
+      </md-list-item>
     </md-list>
   </md-sidenav>
 </template>
