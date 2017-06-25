@@ -9,12 +9,29 @@
       </md-layout>
     </template>
 
+    <md-speed-dial v-if="!isLoading && deviation" md-mode="scale" class="md-fab-bottom-right">
+      <md-button class="md-fab" md-fab-trigger>
+        <md-icon md-icon-morph>close</md-icon>
+        <md-icon>menu</md-icon>
+      </md-button>
+
+      <md-button class="md-fab md-mini md-clean" @click="$router.push({ name: 'SmartCrop', params: { deviationid: deviation.deviationid } })">
+        <md-icon>crop</md-icon>
+      </md-button>
+
+      <md-button class="md-fab md-mini md-clean" @click="downloadUrl(deviation.content.src || deviation.preview.src)">
+        <md-icon>file_download</md-icon>
+      </md-button>
+    </md-speed-dial>
+
     <md-spinner v-if="isLoading" md-indeterminate></md-spinner>
   </md-layout>
 </template>
 
 <script>
   import { mapGetters, mapActions } from 'vuex'
+
+  import { downloadUrl } from '@/libs/utils'
 
   export default {
     name: 'deviation-view',
@@ -33,7 +50,8 @@
     },
 
     methods: {
-      ...mapActions(['loadDeviation'])
+      ...mapActions(['loadDeviation']),
+      downloadUrl
     },
 
     created() {

@@ -6,6 +6,7 @@ import FolderListView from '@/views/FolderListView'
 import FolderView from '@/views/FolderView'
 import DeviationView from '@/views/DeviationView'
 import DebugView from '@/views/DebugView'
+import SmartCropView from '@/views/SmartCropView'
 
 Vue.use(Router)
 
@@ -31,6 +32,11 @@ export default new Router({
       path: '/wallpaper/:deviationid',
       name: 'Deviation',
       component: DeviationView
+    },
+    {
+      path: '/wallpaper/:deviationid/smartcrop',
+      name: 'SmartCrop',
+      component: SmartCropView
     },
     {
       path: '/debug',
