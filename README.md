@@ -8,6 +8,9 @@
 # install dependencies
 npm install
 
+# create environment config file
+cp example.env .env
+
 # serve with hot reload at localhost:8080
 npm run dev
 
@@ -17,11 +20,17 @@ npm run build
 # build for production and view the bundle analyzer report
 npm run build --report
 
+# run eslint
+npm run lint:js
+
+# run stylelint
+npm run lint:scss
+
 # run unit tests
-npm run unit
+npm run test:unit
 
 # run e2e tests
-npm run e2e
+npm run test:e2e
 
 # run all tests
 npm test
