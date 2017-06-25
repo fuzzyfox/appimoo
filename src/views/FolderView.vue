@@ -1,5 +1,5 @@
 <template lang="html">
-  <md-layout class="folder-view" :md-gutter="16">
+  <div class="folder-view">
     <md-card v-for="deviation in deviations" :key="deviation.deviationid" class="deviation">
       <md-card-media>
         <img :src="deviation.preview.src" :alt="deviation.title" @click="$router.push({ name: 'Deviation', params: { deviationid: deviation.deviationid } })">
@@ -8,18 +8,14 @@
       </md-card-media>
 
       <md-card-header>
+        <md-avatar>
+          <img v-if="deviation.author.usericon" :src="deviation.author.usericon" :alt="deviation.author.username + ' avatar'">
+          <md-icon v-else>person</md-icon>
+        </md-avatar>
+
         <div class="md-title">{{ deviation.title }}</div>
+        <div class="md-subhead">By: {{ deviation.author.username }}</div>
       </md-card-header>
-
-      <md-card-actions>
-        <md-button class="md-icon-button">
-          <md-icon>favorite</md-icon>
-        </md-button>
-
-        <md-button class="md-icon-button">
-          <md-icon>bookmark</md-icon>
-        </md-button>
-      </md-card-actions>
     </md-card>
 
     <md-spinner v-if="isLoading" md-indeterminate></md-spinner>
@@ -30,7 +26,7 @@
       @close="$router.push({ name: 'Folders' })"
       ref="dialog">
     </md-dialog-alert>
-  </md-layout>
+  </div>
 </template>
 
 <script>

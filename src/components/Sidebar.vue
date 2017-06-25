@@ -5,7 +5,15 @@
         <md-icon>folder</md-icon> <span>Folders</span>
       </md-list-item>
 
-      <md-list-item @click="click({ name: 'Debug' })" class="md-primary">
+      <md-list-item @click="click({ name: 'Artists' })">
+        <md-icon>person</md-icon> <span>Artists</span>
+      </md-list-item>
+
+      <md-list-item @click="click({ name: 'Tags' })">
+        <md-icon>label</md-icon> <span>Tags</span>
+      </md-list-item>
+
+      <md-list-item @click="click({ name: 'Debug' })">
         <md-icon>settings</md-icon> <span>Debug</span>
       </md-list-item>
     </md-list>
@@ -13,7 +21,7 @@
 </template>
 
 <script>
-  import { mapState } from 'vuex'
+  import { mapState, mapGetters } from 'vuex'
 
   import { UI_OPEN_SIDEBAR, UI_CLOSE_SIDEBAR } from '@/store/mutation-types'
 
@@ -24,6 +32,7 @@
       ...mapState({
         isOpen: state => state.ui.isSidebarOpen
       }),
+      ...mapGetters(['tags']),
       UI_OPEN_SIDEBAR() {
         return UI_OPEN_SIDEBAR
       },
