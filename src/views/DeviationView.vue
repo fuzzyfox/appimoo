@@ -6,6 +6,10 @@
       <md-layout md-column>
         <div class="md-title">{{ deviation.title }}</div>
         <div class="md-subheading">By: {{ deviation.author.username }}</div>
+        <div v-if="deviation.license"><strong>License:</strong> {{ deviation.license }}</div>
+        <div v-if="deviation.tags && deviation.tags.length">
+          <md-chip v-for="tag in deviation.tags" :key="tag.tag_name">{{ tag.tag_name }}</md-chip>
+        </div>
       </md-layout>
     </template>
 
@@ -33,11 +37,17 @@
     },
 
     methods: {
-      ...mapActions(['loadDeviation'])
+      ...mapActions(['loadDeviation', 'loadDeviationMetadata'])
     },
 
     created() {
-      this.loadDeviation({ deviationid: this.$route.params.deviationid })
+      if (!this.deviation) {
+        this.loadDeviation({
+          deviationid: this.$route.params.deviationid
+        }).then(({ deviationid }) => this.loadDeviationMetadata({ deviationid }))
+      } else if (!this.deviation.tags) {
+        this.loadDeviationMetadata({ deviationid: this.deviation.deviationid })
+      }
     }
   }
 </script>

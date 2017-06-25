@@ -1,5 +1,5 @@
 <template lang="html">
-  <div class="folder-view">
+  <div class="tag-view">
     <md-card v-for="deviation in deviations" :key="deviation.deviationid" class="deviation">
       <md-card-media>
         <img :src="deviation.preview.src" :alt="deviation.title" @click="$router.push({ name: 'Deviation', params: { deviationid: deviation.deviationid } })">
@@ -22,8 +22,6 @@
       </md-card-actions>
     </md-card>
 
-    <md-spinner v-if="isLoading" md-indeterminate></md-spinner>
-
     <md-dialog-alert
       :md-content="error ? error.message : 'An unkown error has occured'"
       :md-ok-text="'close'"
@@ -34,59 +32,28 @@
 </template>
 
 <script>
-  import { mapState, mapGetters, mapActions } from 'vuex'
+  import { mapGetters } from 'vuex'
 
   export default {
-    name: 'folder-view',
+    name: 'tag-view',
 
     data() {
       return { error: null }
     },
 
     computed: {
-      ...mapState({
-        folders: state => state.folders.folders,
-        isFoldersLoading: state => state.folders.isFoldersLoading
-      }),
-      ...mapGetters(['folderById', 'deviationById']),
-      folder() {
-        return this.folderById(this.$route.params.folderid)
-      },
+      ...mapGetters(['deviationsByTagName']),
       deviations() {
-        return this.folder ? this.folder.deviations.map(this.deviationById) : []
-      },
-      isLoading() {
-        if (!this.folder && this.isFoldersLoading) {
-          return true
-        }
-
-        return this.folder ? this.folder.isLoading : false
+        return this.deviationsByTagName(this.$route.params.tagName)
       }
     },
 
-    methods: {
-      ...mapActions(['loadFolderDeviations'])
-    },
-
-    created() {
-      if (
-        !this.folder ||
-        (this.folder &&
-          (!this.deviations.length || this.deviations.length < this.folder.size))
-      ) {
-        this.loadFolderDeviations({
-          folderid: this.$route.params.folderid
-        }).catch(error => {
-          this.error = error
-          this.$refs.dialog.open()
-        })
-      }
-    }
+    created() {}
   }
 </script>
 
 <style lang="scss">
-  .folder-view {
+  .tag-view {
     padding: 16px;
 
     .deviation {

@@ -39,7 +39,6 @@
 
   .main-content {
     position: relative;
-    z-index: 1;
     overflow: auto;
   }
 </style>
