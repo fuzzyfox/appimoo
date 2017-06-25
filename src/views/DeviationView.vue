@@ -19,7 +19,7 @@
         <md-icon>crop</md-icon>
       </md-button>
 
-      <md-button class="md-fab md-mini md-clean" @click="downloadUrl(deviation.content.src || deviation.preview.src)">
+      <md-button class="md-fab md-mini md-clean" @click="downloadUrl(sourceUrl)">
         <md-icon>file_download</md-icon>
       </md-button>
     </md-speed-dial>
@@ -46,16 +46,45 @@
       ...mapGetters(['deviationById']),
       deviation() {
         return this.deviationById(this.$route.params.deviationid)
+      },
+      sourceUrl() {
+        if (!this.deviation) {
+          return null
+        }
+
+        if (this.deviation.download) {
+          return this.deviation.download.src
+        }
+
+        if (this.deviation.content) {
+          return this.deviation.content.src
+        }
+
+        return this.deviation.preview.src
       }
     },
 
     methods: {
-      ...mapActions(['loadDeviation']),
+      ...mapActions(['loadDeviation', 'loadDeviationDownload']),
       downloadUrl
     },
 
     created() {
-      this.loadDeviation({ deviationid: this.$route.params.deviationid })
+      if (!this.deviation) {
+        return this.loadDeviation({
+          deviationid: this.$route.params.deviationid
+        }).then(() =>
+          this.loadDeviationDownload({
+            deviationid: this.$route.params.deviationid
+          })
+        )
+      }
+
+      if (!this.deviation.download) {
+        this.loadDeviationDownload({
+          deviationid: this.$route.params.deviationid
+        })
+      }
     }
   }
 </script>

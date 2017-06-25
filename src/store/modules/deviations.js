@@ -26,6 +26,14 @@ const mutations = {
       state.deviations.push(deviation)
     }
   },
+  [mutationType.DEVIATION_UPDATE](state, { deviation }) {
+    const oldData = state.deviations.find(
+      existing => existing.deviationid === deviation.deviationid
+    )
+    if (oldData) {
+      Object.assign(oldData, deviation)
+    }
+  },
   [mutationType.DEVIAIONS_CLEAR](state) {
     Object.assign(state, initState())
   }
@@ -41,8 +49,24 @@ const actions = {
       .get(`deviation/${deviationid}`)
       .then(response => response.json())
       .then(deviation => {
-        commit(mutationType.DEVIAION_INSERT, { deviation })
+        commit(mutationType.DEVIAION_INSERT, {
+          deviation: {
+            ...deviation,
+            download: deviation.download || null
+          }
+        })
         return deviation
+      })
+  },
+  loadDeviationDownload({ commit }, { deviationid }) {
+    return Vue.http
+      .get(`deviation/download/${deviationid}`)
+      .then(response => response.json())
+      .then(download => {
+        commit(mutationType.DEVIATION_UPDATE, {
+          deviation: { deviationid, download }
+        })
+        return download
       })
   }
 }

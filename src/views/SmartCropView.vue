@@ -59,6 +59,21 @@
       deviation() {
         return this.deviationById(this.$route.params.deviationid)
       },
+      sourceUrl() {
+        if (!this.deviation) {
+          return null
+        }
+
+        if (this.deviation.download) {
+          return this.deviation.download.src
+        }
+
+        if (this.deviation.content) {
+          return this.deviation.content.src
+        }
+
+        return this.deviation.preview.src
+      },
       cropCanvas() {
         return document.createElement('canvas')
       },
@@ -71,9 +86,6 @@
         this.cropped = null
 
         const { width, height } = window.screen
-        const sourceUrl = this.deviation.conent
-          ? this.deviation.content.src
-          : this.deviation.preview.src
 
         return new Promise((resolve, reject) => {
           this.image = new Image()
@@ -105,13 +117,13 @@
           }
 
           this.image.crossOrigin = true
-          this.image.src = `https://cors-anywhere.herokuapp.com/${sourceUrl}`
+          this.image.src = `https://cors-anywhere.herokuapp.com/${this.sourceUrl}`
         }).catch(error => (this.error = error))
       }
     },
 
     methods: {
-      ...mapActions(['loadDeviation']),
+      ...mapActions(['loadDeviation', 'loadDeviationDownload']),
       downloadUrl,
       retryCrop() {
         // TODO filter the results down to remove hihgly similar entries
@@ -148,7 +160,19 @@
 
     created() {
       if (!this.deviation) {
-        return this.loadDeviation({ deviationid: this.$route.params.deviationid })
+        return this.loadDeviation({
+          deviationid: this.$route.params.deviationid
+        }).then(() =>
+          this.loadDeviationDownload({
+            deviationid: this.$route.params.deviationid
+          })
+        )
+      }
+
+      if (!this.deviation.download) {
+        this.loadDeviationDownload({
+          deviationid: this.$route.params.deviationid
+        })
       }
     }
   }
