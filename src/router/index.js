@@ -2,6 +2,8 @@ import Vue from 'vue'
 import Router from 'vue-router'
 import Hello from '@/components/Hello'
 
+import ArtistListView from '@/views/ArtistListView'
+import ArtistView from '@/views/ArtistView'
 import FolderListView from '@/views/FolderListView'
 import FolderView from '@/views/FolderView'
 import TagListView from '@/views/TagListView'
@@ -18,6 +20,16 @@ export default new Router({
       path: '/',
       name: 'Hello',
       component: Hello
+    },
+    {
+      path: '/artists',
+      name: 'Artists',
+      component: ArtistListView
+    },
+    {
+      path: '/artists/:userid',
+      name: 'Artist',
+      component: ArtistView
     },
     {
       path: '/folders',

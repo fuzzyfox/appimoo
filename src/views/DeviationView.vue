@@ -3,14 +3,24 @@
     <template v-if="deviation">
       <img :src="deviation.preview.src" :alt="deviation.name">
 
-      <md-layout md-column>
-        <div class="md-title">{{ deviation.title }}</div>
-        <div class="md-subheading">By: {{ deviation.author.username }}</div>
-        <div v-if="deviation.license"><strong>License:</strong> {{ deviation.license }}</div>
+      <div class="wallpaper-metadata">
+        <md-avatar>
+          <img v-if="deviation.author.usericon" :src="deviation.author.usericon" :alt="deviation.author.username + ' avatar'">
+          <md-icon v-else>person</md-icon>
+        </md-avatar>
+
+        <div class="wallpaper-details">
+          <div class="md-title">{{ deviation.title }}</div>
+          <div class="md-subhead">By: {{ deviation.author.username }}</div>
+        </div>
+      </div>
+
+      <div class="wallpaper-metadata md-column">
+        <div v-if="deviation.license" class="license"><strong>License:</strong> {{ deviation.license }}</div>
         <div v-if="deviation.tags && deviation.tags.length">
           <md-chip v-for="tag in deviation.tags" :key="tag.tag_name">{{ tag.tag_name }}</md-chip>
         </div>
-      </md-layout>
+      </div>
     </template>
 
     <md-spinner v-if="isLoading" md-indeterminate></md-spinner>
@@ -56,6 +66,24 @@
   .deviation-view {
     & > .md-layout {
       padding: 8px;
+    }
+
+    .wallpaper-metadata {
+      display: flex;
+      padding: 8px 16px;
+
+      & > .md-avatar {
+        flex: 0 0 auto;
+        margin-right: 16px;
+      }
+
+      & > .wallpaper-details {
+        flex: 1 1 auto;
+      }
+
+      & > .license {
+        margin-bottom: 8px;
+      }
     }
 
     & > .md-spinner {

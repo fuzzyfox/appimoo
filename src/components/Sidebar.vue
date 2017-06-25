@@ -5,6 +5,10 @@
         <md-icon>folder</md-icon> <span>Folders</span>
       </md-list-item>
 
+      <md-list-item @click="click({ name: 'Artists' })">
+        <md-icon>person</md-icon> <span>Artists</span>
+      </md-list-item>
+
       <md-list-item @click="click({ name: 'Tags' })">
         <md-icon>label</md-icon> <span>Tags</span>
       </md-list-item>

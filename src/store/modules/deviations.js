@@ -1,4 +1,7 @@
 import Vue from 'vue'
+import uniqBy from 'lodash/uniqBy'
+import sortBy from 'lodash/sortBy'
+
 import * as mutationType from '@/store/mutation-types'
 
 export const initState = () => {
@@ -46,6 +49,8 @@ const getters = {
       deviation =>
         deviation.tags && deviation.tags.find(tag => tag.tag_name === tagName)
     ),
+  deviationsByArtist: state => artist =>
+    state.deviations.filter(({ author }) => author.userid === artist.userid),
   tags: state => [
     ...new Set(
       state.deviations
@@ -55,7 +60,12 @@ const getters = {
           []
         )
     )
-  ]
+  ],
+  artists: state =>
+    sortBy(
+      uniqBy(state.deviations.map(({ author }) => author), 'userid'),
+      user => user.username.toLowerCase()
+    )
 }
 
 const actions = {
