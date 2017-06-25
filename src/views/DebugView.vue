@@ -18,10 +18,18 @@
       </md-list-item>
 
       <md-list-item>
-        Vuex
+        Auth
 
         <md-list-expand>
-          <pre>{{ $store.state }}</pre>
+          <pre>{{ $store.state.auth }}</pre>
+        </md-list-expand>
+      </md-list-item>
+
+      <md-list-item>
+        Vuex Stats
+
+        <md-list-expand>
+          <pre>{{ vuexStats }}</pre>
         </md-list-expand>
       </md-list-item>
 
@@ -33,6 +41,8 @@
         </md-list-expand>
       </md-list-item>
     </md-list>
+
+    <md-button class="md-raised md-warn" @click="$store.commit('CLEAR_ALL_DATA')">Clear All Data</md-button>
   </div>
 </template>
 
@@ -44,10 +54,22 @@
 
     data() {
       return {
+        isSyncing: false,
         environment: process.env,
         storage: {
           STORAGE_KEY,
           SYNCED_NAMESPACES
+        }
+      }
+    },
+
+    computed: {
+      vuexStats() {
+        return {
+          deviations: this.$store.state.deviations.deviations.length,
+          folders: this.$store.state.folders.folders.length,
+          artists: this.$store.getters.artists.length,
+          tags: this.$store.getters.tags.length
         }
       }
     }

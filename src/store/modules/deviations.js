@@ -81,7 +81,12 @@ const actions = {
         commit(mutationType.DEVIAION_INSERT, {
           deviation: {
             ...deviation,
-            download: deviation.download || null
+            download: deviation.download || null,
+            description: deviation.description || null,
+            license: deviation.license || null,
+            tags: deviation.tags || null,
+            stats: deviation.stats || null,
+            collections: deviation.collections || null
           }
         })
         return deviation

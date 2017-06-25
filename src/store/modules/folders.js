@@ -200,17 +200,14 @@ const actions = {
       commit(mutationType.FOLDERS_CLEAR)
     }
 
-    return new Promise((resolve, reject) => {
-      dispatch('loadFolders', params).then(
-        data =>
-          data.has_more
-            ? dispatch('loadAllFolders', {
-                offset: params.offset + data.results.length
-              })
-            : data,
-        reject
-      )
-    })
+    return dispatch('loadFolders', params).then(
+      data =>
+        data.has_more
+          ? dispatch('loadAllFolders', {
+              offset: params.offset + data.results.length
+            })
+          : data
+    )
   }
 }
 

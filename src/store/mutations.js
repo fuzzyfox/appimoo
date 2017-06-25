@@ -1,4 +1,6 @@
 import { initAuthState } from './state'
+import { initState as initFoldersState } from './modules/folders'
+import { initState as initDeviationssState } from './modules/deviations'
 import * as mutationType from './mutation-types'
 
 export const mutations = {
@@ -15,6 +17,8 @@ export const mutations = {
 
   [mutationType.CLEAR_ALL_DATA](state) {
     state.auth = initAuthState()
+    state.folders = initFoldersState()
+    state.deviations = initDeviationssState()
   },
 
   [mutationType.SYNC_STORAGE](state, storageState) {
