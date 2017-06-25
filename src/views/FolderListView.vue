@@ -10,8 +10,6 @@
           <span>{{ folder.name }}</span>
           <p>{{ folder.size }} wallpapers</p>
         </div>
-
-        <md-ink-ripple></md-ink-ripple>
       </md-list-item>
     </md-list>
 

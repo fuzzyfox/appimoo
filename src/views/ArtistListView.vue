@@ -11,8 +11,6 @@
           <span>{{ artist.username }}</span>
           <p>{{ deviationsByArtist(artist).length }} wallpapers</p>
         </div>
-
-        <md-ink-ripple></md-ink-ripple>
       </md-list-item>
     </md-list>
   </md-layout>

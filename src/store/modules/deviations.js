@@ -51,16 +51,20 @@ const getters = {
     ),
   deviationsByArtist: state => artist =>
     state.deviations.filter(({ author }) => author.userid === artist.userid),
-  tags: state => [
-    ...new Set(
-      state.deviations
-        .filter(({ tags }) => tags)
-        .reduce(
-          (prev, { tags }) => prev.concat(tags.map(tag => tag.tag_name)),
-          []
+  tags: state =>
+    sortBy(
+      [
+        ...new Set(
+          state.deviations
+            .filter(({ tags }) => tags)
+            .reduce(
+              (prev, { tags }) => prev.concat(tags.map(tag => tag.tag_name)),
+              []
+            )
         )
-    )
-  ],
+      ],
+      tag => tag.toLowerCase()
+    ),
   artists: state =>
     sortBy(
       uniqBy(state.deviations.map(({ author }) => author), 'userid'),

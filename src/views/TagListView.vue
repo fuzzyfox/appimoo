@@ -1,7 +1,16 @@
 <template lang="html">
   <md-layout class="tag-list-view">
     <md-list>
-      <md-list-item v-for="tag in tags" :key="tag" @click="$router.push({ name: 'Tag', params: { tagName: tag } })">{{ tag }}</md-list-item>
+      <md-list-item v-for="tag in tags" :key="tag" @click="$router.push({ name: 'Tag', params: { tagName: tag } })">
+        <md-avatar class="md-avatar-icon">
+          <md-icon>label</md-icon>
+        </md-avatar>
+
+        <div class="md-list-text-container">
+          <span>{{ tag }}</span>
+          <p>{{ deviationsByTagName(tag).length }} wallpapers</p>
+        </div>
+      </md-list-item>
     </md-list>
   </md-layout>
 </template>
@@ -13,7 +22,7 @@
     name: 'tag-list-view',
 
     computed: {
-      ...mapGetters(['tags'])
+      ...mapGetters(['tags', 'deviationsByTagName'])
     }
   }
 </script>
