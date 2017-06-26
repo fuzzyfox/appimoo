@@ -12,7 +12,10 @@ import store from '@/store'
 import AuthPlugin from '@/auth'
 Vue.use(AuthPlugin)
 
-Vue.config.productionTip = false
+Vue.config.productionTip = process.env.NODE_ENV !== 'production'
+Vue.config.silent = process.env.NODE_ENV === 'production'
+Vue.config.devtools = process.env.NODE_ENV !== 'production'
+// Vue.config.performance = process.env.NODE_ENV !== 'production'
 
 /* eslint-disable no-new */
 new Vue({

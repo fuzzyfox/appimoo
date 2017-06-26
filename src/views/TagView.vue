@@ -1,26 +1,6 @@
 <template lang="html">
   <div class="tag-view">
-    <md-card v-for="deviation in deviations" :key="deviation.deviationid" class="deviation">
-      <md-card-media>
-        <img :src="deviation.preview.src" :alt="deviation.title" @click="$router.push({ name: 'Deviation', params: { deviationid: deviation.deviationid } })">
-
-        <md-ink-ripple></md-ink-ripple>
-      </md-card-media>
-
-      <md-card-header>
-        <div class="md-title">{{ deviation.title }}</div>
-      </md-card-header>
-
-      <md-card-actions>
-        <md-button class="md-icon-button">
-          <md-icon>favorite</md-icon>
-        </md-button>
-
-        <md-button class="md-icon-button">
-          <md-icon>bookmark</md-icon>
-        </md-button>
-      </md-card-actions>
-    </md-card>
+    <am-deviation-list v-if="deviations" :deviations="deviations"></am-deviation-list>
 
     <md-dialog-alert
       :md-content="error ? error.message : 'An unkown error has occured'"
@@ -34,8 +14,14 @@
 <script>
   import { mapGetters } from 'vuex'
 
+  import AmDeviationList from '@/components/DeviationList'
+
   export default {
     name: 'tag-view',
+
+    components: {
+      AmDeviationList
+    },
 
     data() {
       return { error: null }
@@ -55,14 +41,6 @@
 <style lang="scss">
   .tag-view {
     padding: 16px;
-
-    .deviation {
-      width: 100%;
-
-      &:not(:last-child) {
-        margin-bottom: 16px;
-      }
-    }
 
     & > .md-spinner {
       margin: 0 auto;

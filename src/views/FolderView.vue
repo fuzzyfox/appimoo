@@ -1,22 +1,6 @@
 <template lang="html">
   <div class="folder-view">
-    <md-card v-for="deviation in deviations" :key="deviation.deviationid" class="deviation">
-      <md-card-media>
-        <img :src="deviation.preview.src" :alt="deviation.title" @click="$router.push({ name: 'Deviation', params: { deviationid: deviation.deviationid } })">
-
-        <md-ink-ripple></md-ink-ripple>
-      </md-card-media>
-
-      <md-card-header>
-        <md-avatar>
-          <img v-if="deviation.author.usericon" :src="deviation.author.usericon" :alt="deviation.author.username + ' avatar'">
-          <md-icon v-else>person</md-icon>
-        </md-avatar>
-
-        <div class="md-title">{{ deviation.title }}</div>
-        <div class="md-subhead">By: {{ deviation.author.username }}</div>
-      </md-card-header>
-    </md-card>
+    <am-deviation-list v-if="deviations" :deviations="deviations"></am-deviation-list>
 
     <md-spinner v-if="isLoading" md-indeterminate></md-spinner>
 
@@ -32,8 +16,14 @@
 <script>
   import { mapState, mapGetters, mapActions } from 'vuex'
 
+  import AmDeviationList from '@/components/DeviationList'
+
   export default {
     name: 'folder-view',
+
+    components: {
+      AmDeviationList
+    },
 
     data() {
       return { error: null }
@@ -84,14 +74,6 @@
 <style lang="scss">
   .folder-view {
     padding: 16px;
-
-    .deviation {
-      width: 100%;
-
-      &:not(:last-child) {
-        margin-bottom: 16px;
-      }
-    }
 
     & > .md-spinner {
       margin: 0 auto;

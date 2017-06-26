@@ -4,21 +4,21 @@
       <img :src="deviation.preview.src" :alt="deviation.name">
 
       <div class="wallpaper-metadata">
-        <md-avatar>
+        <md-avatar v-if="deviation.author" @click.native="$router.push({ name: 'Artist', params: { userid: deviation.author.userid } })">
           <img v-if="deviation.author.usericon" :src="deviation.author.usericon" :alt="deviation.author.username + ' avatar'">
           <md-icon v-else>person</md-icon>
         </md-avatar>
 
         <div class="wallpaper-details">
           <div class="md-title">{{ deviation.title }}</div>
-          <div class="md-subhead">By: {{ deviation.author.username }}</div>
+          <div v-if="deviation.author" class="md-subhead" >By: {{ deviation.author.username }}</div>
         </div>
       </div>
 
       <div class="wallpaper-metadata md-column">
         <div v-if="deviation.license" class="license"><strong>License:</strong> {{ deviation.license }}</div>
         <div v-if="deviation.tags && deviation.tags.length">
-          <md-chip v-for="tag in deviation.tags" :key="tag.tag_name">{{ tag.tag_name }}</md-chip>
+          <md-chip v-for="tag in deviation.tags" :key="tag.tag_name" @click.native="$router.push({ name: 'Tag', params: { tagName: tag.tag_name} })">{{ tag.tag_name }}</md-chip>
         </div>
       </div>
     </template>

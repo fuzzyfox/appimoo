@@ -1,30 +1,20 @@
 <template lang="html">
-  <md-layout class="artist-view" :md-gutter="16">
-    <md-card v-for="deviation in deviations" :key="deviation.deviationid" class="deviation">
-      <md-card-media>
-        <img :src="deviation.preview.src" :alt="deviation.title" @click="$router.push({ name: 'Deviation', params: { deviationid: deviation.deviationid } })">
-
-        <md-ink-ripple></md-ink-ripple>
-      </md-card-media>
-
-      <md-card-header>
-        <md-avatar>
-          <img v-if="artist.usericon" :src="artist.usericon" :alt="artist.username + ' avatar'">
-          <md-icon v-else>person</md-icon>
-        </md-avatar>
-
-        <div class="md-title">{{ deviation.title }}</div>
-        <div class="md-subhead">By: {{ artist.username }}</div>
-      </md-card-header>
-    </md-card>
-  </md-layout>
+  <div class="artist-view">
+    <am-deviation-list v-if="deviations" :deviations="deviations"></am-deviation-list>
+  </div>
 </template>
 
 <script>
   import { mapGetters } from 'vuex'
 
+  import AmDeviationList from '@/components/DeviationList'
+
   export default {
     name: 'artist-view',
+
+    components: {
+      AmDeviationList
+    },
 
     computed: {
       ...mapGetters(['deviationsByArtist']),
@@ -45,14 +35,6 @@
 <style lang="scss">
   .artist-view {
     padding: 16px;
-
-    .deviation {
-      width: 100%;
-
-      &:not(:last-child) {
-        margin-bottom: 16px;
-      }
-    }
 
     & > .md-spinner {
       margin: 0 auto;
