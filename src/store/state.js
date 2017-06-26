@@ -8,7 +8,8 @@ export const initAuthState = () => {
 
 export const initUIState = () => {
   return {
-    isSidebarOpen: false
+    isSidebarOpen: false,
+    headerTitleOverride: null
   }
 }
 

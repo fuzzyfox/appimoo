@@ -12,7 +12,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   import AmDeviationList from '@/components/DeviationList'
 
@@ -34,7 +34,13 @@
       }
     },
 
-    created() {}
+    methods: {
+      ...mapActions(['uiSetHeaderTitle'])
+    },
+
+    created() {
+      this.uiSetHeaderTitle({ title: `Tag: ${this.$route.params.tagName}` })
+    }
   }
 </script>
 

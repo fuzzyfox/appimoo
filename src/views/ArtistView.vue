@@ -5,7 +5,7 @@
 </template>
 
 <script>
-  import { mapGetters } from 'vuex'
+  import { mapGetters, mapActions } from 'vuex'
 
   import AmDeviationList from '@/components/DeviationList'
 
@@ -28,6 +28,14 @@
 
         return this.deviations[0].author
       }
+    },
+
+    methods: {
+      ...mapActions(['uiSetHeaderTitle'])
+    },
+
+    created() {
+      this.uiSetHeaderTitle({ title: this.artist.username })
     }
   }
 </script>

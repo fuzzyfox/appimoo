@@ -6,7 +6,7 @@
           <md-icon>menu</md-icon>
         </md-button>
 
-        <h2 class="md-title">{{ $route.name }}</h2>
+        <h2 class="md-title">{{ headerTitle }}</h2>
 
         <span style="flex: 1"></span>
 
@@ -19,8 +19,14 @@
 </template>
 
 <script>
+  import { mapGetters } from 'vuex'
+
   export default {
-    name: 'am-header'
+    name: 'am-header',
+
+    computed: {
+      ...mapGetters(['headerTitle'])
+    }
   }
 </script>
 

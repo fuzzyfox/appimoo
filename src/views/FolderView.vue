@@ -51,7 +51,7 @@
     },
 
     methods: {
-      ...mapActions(['loadFolderDeviations'])
+      ...mapActions(['loadFolderDeviations', 'uiSetHeaderTitle'])
     },
 
     created() {
@@ -60,12 +60,22 @@
         (this.folder &&
           (!this.deviations.length || this.deviations.length < this.folder.size))
       ) {
-        this.loadFolderDeviations({
+        return this.loadFolderDeviations({
           folderid: this.$route.params.folderid
-        }).catch(error => {
-          this.error = error
-          this.$refs.dialog.open()
         })
+          .then(() => {
+            if (this.folder.name) {
+              this.uiSetHeaderTitle({ title: this.folder.name })
+            }
+          })
+          .catch(error => {
+            this.error = error
+            this.$refs.dialog.open()
+          })
+      }
+
+      if (this.folder.name) {
+        this.uiSetHeaderTitle({ title: this.folder.name })
       }
     }
   }
