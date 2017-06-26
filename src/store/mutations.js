@@ -14,6 +14,12 @@ export const mutations = {
   [mutationType.UI_CLOSE_SIDEBAR](state) {
     state.ui.isSidebarOpen = false
   },
+  [mutationType.UI_SET_HEADER_TITLE_OVERRIDE](state, { title }) {
+    state.ui.headerTitleOverride = title
+  },
+  [mutationType.UI_CLEAR_HEADER_TITLE_OVERRIDE](state) {
+    state.ui.headerTitleOverride = null
+  },
 
   [mutationType.CLEAR_ALL_DATA](state) {
     state.auth = initAuthState()
